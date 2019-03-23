@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","width":330,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在Raspbian上安裝OpenCV硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore IV[43], OpenGL ES 2.0, 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Raspbian上安裝OpenCV">
+<meta property="og:url" content="http://yoursite.com/2016/10/13/在Raspbian上安裝OpenCV/index.html">
+<meta property="og:site_name" content="紀錄小屋">
+<meta property="og:description" content="在Raspbian上安裝OpenCV硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore IV[43], OpenGL ES 2.0, 1">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/yvDGrJe.png">
+<meta property="og:image" content="https://i.imgur.com/V0g180O.png">
+<meta property="og:image" content="https://i.imgur.com/Z9D97Dx.png">
+<meta property="og:image" content="https://i.imgur.com/4CqSuJs.png">
+<meta property="og:image" content="https://i.imgur.com/NtNC8US.png">
+<meta property="og:image" content="https://i.imgur.com/l0uvGDJ.png">
+<meta property="og:updated_time" content="2019-03-23T20:01:52.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Raspbian上安裝OpenCV">
+<meta name="twitter:description" content="在Raspbian上安裝OpenCV硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore IV[43], OpenGL ES 2.0, 1">
+<meta name="twitter:image" content="https://i.imgur.com/yvDGrJe.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/13/在Raspbian上安裝OpenCV/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>在Raspbian上安裝OpenCV | 紀錄小屋</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">紀錄小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>關於我</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+  <a href="https://github.com/ntsok56893" class="github-corner" title="我的Github" aria-label="我的Github" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/13/在Raspbian上安裝OpenCV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="柯天文(Tien-Wen Ko)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/DSC_0026.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紀錄小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在Raspbian上安裝OpenCV
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間：2016-10-13 20:48:19" itemprop="dateCreated datePublished" datetime="2016-10-13T20:48:19+08:00">2016-10-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新於</span>
+                
+                <time title="修改時間：2019-03-24 04:01:52" itemprop="dateModified" datetime="2019-03-24T04:01:52+08:00">2019-03-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="在Raspbian上安裝OpenCV"><a href="#在Raspbian上安裝OpenCV" class="headerlink" title="在Raspbian上安裝OpenCV"></a><strong>在Raspbian上安裝OpenCV</strong></h1><h2 id="硬體-Raspberry-Pi-3"><a href="#硬體-Raspberry-Pi-3" class="headerlink" title="硬體 Raspberry Pi 3"></a>硬體 Raspberry Pi 3</h2><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:left">Raspberry Pi 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SoC</td>
+<td style="text-align:left">Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）</td>
+</tr>
+<tr>
+<td style="text-align:center">CPU</td>
+<td style="text-align:left">ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)</td>
+</tr>
+<tr>
+<td style="text-align:center">GPU</td>
+<td style="text-align:left">Broadcom VideoCore IV[43], OpenGL ES 2.0, 1080p 30 h.264/MPEG-4 AVC高畫質解碼器</td>
+</tr>
+<tr>
+<td style="text-align:center">記憶體</td>
+<td style="text-align:left">1024 MB (LPDDR2)</td>
+</tr>
+<tr>
+<td style="text-align:center">影像輸出</td>
+<td style="text-align:left">畫面用RCA端子（PAL &amp; NTSC）、HDMI，HDMI介面可使用14種解析度，分別從640×350到1920×1200之間</td>
+</tr>
+<tr>
+<td style="text-align:center">板載儲存</td>
+<td style="text-align:left">MicroSD卡插槽</td>
+</tr>
+<tr>
+<td style="text-align:center">網路介面</td>
+<td style="text-align:left">10/100Mbps 乙太網介面（RJ45介面），支援802.11n無線網路及藍牙4.1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="軟體-OpenCV-3-1-0"><a href="#軟體-OpenCV-3-1-0" class="headerlink" title="軟體 OpenCV 3.1.0"></a>軟體 OpenCV 3.1.0</h2><p>OpenCV的全稱是Open Source Computer Vision Library，是一個跨平台的電腦視覺庫。OpenCV是由英特爾公司發起並參與開發，以BSD授權條款授權發行，可以在商業和研究領域中免費使用。OpenCV可用於開發實時的圖像處理、電腦視覺以及模式識別程式。該程式庫也可以使用英特爾公司的IPP進行加速處理。</p>
+<p>OpenCV可用於解決如下領域的問題：</p>
+<ul>
+<li>人機互動</li>
+<li>物體識別</li>
+<li>圖像分割</li>
+<li>人臉識別</li>
+<li>動作識別</li>
+<li>運動跟蹤</li>
+<li>機器人</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">OpenCV</th>
+<th style="text-align:left">可使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">程式語言</td>
+<td style="text-align:left">C\C++、Python、Java、MATLAB/OCTAVE、C#、Ch、Ruby、CUDA</td>
+</tr>
+<tr>
+<td style="text-align:center">安裝環境</td>
+<td style="text-align:left">Windows、Android、Maemo、FreeBSD、OpenBSD、iOS、Linux、Mac OS等</td>
+</tr>
+</tbody>
+</table>
+<p>OpenCV目前最新有2.4.13和3.1.0兩種版本，第2版的更新是為了讓以前的開發的程式能夠執行並慢慢轉換到第3版，因此目前以<strong>第3版(3.X.X)為主</strong>。</p>
+<h3 id="OpenCV下載"><a href="#OpenCV下載" class="headerlink" title="OpenCV下載"></a><a href="https://opencv.org/releases.html" target="_blank" rel="noopener">OpenCV下載</a></h3><hr>
+<h2 id="安裝Raspbian"><a href="#安裝Raspbian" class="headerlink" title="安裝Raspbian"></a>安裝Raspbian</h2><h3 id="建置PI並安裝Raspbian-參考"><a href="#建置PI並安裝Raspbian-參考" class="headerlink" title="建置PI並安裝Raspbian(參考)"></a>建置PI並安裝Raspbian(<a href="https://hackmd.io/s/SyREPtoK" target="_blank" rel="noopener">參考</a>)</h3><hr>
+<h3 id="安裝OpenCV"><a href="#安裝OpenCV" class="headerlink" title="安裝OpenCV"></a>安裝OpenCV</h3><p><strong>1. 更新套件清單並升級：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get dist-upgrade -y</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<p>update: 系統將現有的 Package 升級, 如果有相依性的問題, 而此相依性 需要安裝其它新的 Package 或 影響到其它 Package 的相依性時, 此 Package 就不會被升級, 會保留下來。</p>
+<p>dist-upgrade: 可以聰明的解決相依性的問題, 如果有相依性問題, 需要 安裝/移除 新的 Package, 就會試著去 安裝/移除 它。 (所以通常這個會被認為是有點風險的升級)</p>
+<p>-y：對所有詢問都作肯定的回答,同時不作任何提示</p>
+<p><strong>2. 安裝Opencv套件</strong></p>
+<ul>
+<li><strong>編譯器：</strong><br><code>sudo apt-get install build-essential</code></li>
+<li><strong>必要套件：</strong><br><code>sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libxvidcore-dev libx264-dev libv4l-dev</code></li>
+<li><strong>選擇性套件：</strong><br><code>sudo apt-get install python-dev python-numpy libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev libtbb2 libtbb-dev</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">套件名稱</th>
+<th style="text-align:left">套件說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">libgtk2.0-dev</td>
+<td style="text-align:left">圖形視窗程式庫</td>
+</tr>
+<tr>
+<td style="text-align:center">libavcodec-dev libavformat-dev libswscale-dev libxvidcore-dev libx264-dev libv41-dev</td>
+<td style="text-align:left">音訊視訊的編解碼、錄製、轉換、串流</td>
+</tr>
+<tr>
+<td style="text-align:center">python-dev python-numpy</td>
+<td style="text-align:left">python相關</td>
+</tr>
+<tr>
+<td style="text-align:center">libjpeg-dev libpng-dev libtiff-dev libjasper-dev</td>
+<td style="text-align:left">圖片格式</td>
+</tr>
+<tr>
+<td style="text-align:center">libdc1394-22-dev</td>
+<td style="text-align:left">IEEE 1934相機介面(請裝)</td>
+</tr>
+<tr>
+<td style="text-align:center">libtbb2 libtbb-dev</td>
+<td style="text-align:left"><a href="https://www.threadingbuildingblocks.org/download" target="_blank" rel="noopener">TBB</a>是C/C++平行處理程式庫，可讓執行速度加快，但<strong>raspbian沒有這套件</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span style="border-bottom:2px solid red;">編譯器與必要套件一定要裝</span>，選擇性套件可裝可不裝。</p>
+<p><strong>3.下載並解壓縮OpenCV(2選1)</strong></p>
+<ul>
+<li><p>輸入指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/Itseez/opencv/archive/3.1.0.zip</span><br><span class="line">unzip 3.1.0.zip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>進<a href="http://opencv.org/" target="_blank" rel="noopener">官網</a>下載<br><code>unzip 3.1.0.zip</code></p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/yvDGrJe.png" alt></p>
+<p><img src="https://i.imgur.com/V0g180O.png" alt></p>
+<p><strong>4.進入OpenCV資料夾，新增一個資料夾並進入</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd opencv-3.1.0</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br></pre></td></tr></table></figure></p>
+<p><strong>5.執行cmake生產建置需要的設定檔</strong><br><code>cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_TBB=ON -D WITH_TBB=ON -D CMAKE_INSTALL_PREFIX=/usr/local ..</code></p>
+<p>TBB設置版本<br><img src="https://i.imgur.com/Z9D97Dx.png" alt></p>
+<p>設定成功<br><img src="https://i.imgur.com/4CqSuJs.png" alt></p>
+<p><code>-D BUILD_TBB=ON</code> TBB平行處理程式庫藉由這裡裝，但是版本通常較舊。<br><strong>6.開始建置</strong><br><code>make -j4</code></p>
+<p>參數「-j4」可充分利用四個核心執行。<br><strong>7.安裝</strong><br><code>sudo make install</code><br><strong>8.執行指令更新程式庫</strong><br><code>sudo ldconfig</code><br><strong>9.檢查OpenCV版本</strong><br><code>pkg-config --modversion opencv</code></p>
+<p><img src="https://i.imgur.com/NtNC8US.png" alt></p>
+<p><strong>10.測試OpenCV(以C++為例，使用圖檔test.png)</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;opencv2/core/core.hpp&gt;</span><br><span class="line">#include &lt;opencv2/highgui/highgui.hpp&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace cv;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">    Mat image = imread(&quot;test.png&quot;, -1);</span><br><span class="line">    imshow(&quot;test&quot;, image);</span><br><span class="line">    waitKey(0);</span><br><span class="line">    return 0;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>11.編譯和執行</strong></p>
+<ul>
+<li><p>編譯(2選1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g++ -lopencv_core -lopencv_highgui -lopencv_imgcodecs tes.cpp</span><br><span class="line">g++ `pkg-config --libs opencv` test.cpp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>執行<br><code>./a.out</code></p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/l0uvGDJ.png" alt></p>
+<hr>
+<p>如出現錯誤如下<br>OpenCV : libopencv_core.so.2.4: cannot open shared object file: No such fileor directory<br>執行程式前請先輸入：<br><code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib</code></p>
+<hr>
+<h3 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h3><p><a href="http://yehnan.blogspot.tw/2015/12/raspberry-piraspbianopencv.html" target="_blank" rel="noopener">http://yehnan.blogspot.tw/2015/12/raspberry-piraspbianopencv.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/21/在Raspbian上利用OpenCV內建函式及Camera做人臉偵測/" rel="prev" title="在Raspbian上利用OpenCV內建函式及Camera做人臉偵測">
+                在Raspbian上利用OpenCV內建函式及Camera做人臉偵測 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/DSC_0026.jpg" alt="柯天文(Tien-Wen Ko)">
+            
+              <p class="site-author-name" itemprop="name">柯天文(Tien-Wen Ko)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ntsok56893" title="GitHub &rarr; https://github.com/ntsok56893" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在Raspbian上安裝OpenCV"><span class="nav-number">1.</span> <span class="nav-text">在Raspbian上安裝OpenCV</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬體-Raspberry-Pi-3"><span class="nav-number">1.1.</span> <span class="nav-text">硬體 Raspberry Pi 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#軟體-OpenCV-3-1-0"><span class="nav-number">1.2.</span> <span class="nav-text">軟體 OpenCV 3.1.0</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV下載"><span class="nav-number">1.2.1.</span> <span class="nav-text">OpenCV下載</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝Raspbian"><span class="nav-number">1.3.</span> <span class="nav-text">安裝Raspbian</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建置PI並安裝Raspbian-參考"><span class="nav-number">1.3.1.</span> <span class="nav-text">建置PI並安裝Raspbian(參考)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝OpenCV"><span class="nav-number">1.3.2.</span> <span class="nav-text">安裝OpenCV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#參考文章"><span class="nav-number">1.3.3.</span> <span class="nav-text">參考文章</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">柯天文</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

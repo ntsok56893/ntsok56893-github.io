@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","width":330,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在Raspberry Pi上安裝Ubuntu Classic Server 16.04硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java">
+<meta property="og:url" content="http://yoursite.com/2017/08/10/在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java/index.html">
+<meta property="og:site_name" content="紀錄小屋">
+<meta property="og:description" content="在Raspberry Pi上安裝Ubuntu Classic Server 16.04硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="http://i.imgur.com/lGq8iUa.png">
+<meta property="og:image" content="http://i.imgur.com/sMyIBZD.png">
+<meta property="og:image" content="http://i.imgur.com/ILPuO0q.png">
+<meta property="og:image" content="http://i.imgur.com/9mUU6Ft.png">
+<meta property="og:updated_time" content="2019-03-23T20:47:24.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java">
+<meta name="twitter:description" content="在Raspberry Pi上安裝Ubuntu Classic Server 16.04硬體 Raspberry Pi 3    Raspberry Pi 3     SoC Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）   CPU ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)   GPU Broadcom VideoCore">
+<meta name="twitter:image" content="http://i.imgur.com/lGq8iUa.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/10/在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java | 紀錄小屋</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">紀錄小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>關於我</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+  <a href="https://github.com/ntsok56893" class="github-corner" title="我的Github" aria-label="我的Github" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="柯天文(Tien-Wen Ko)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/DSC_0026.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紀錄小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在Raspberry Pi上安裝Ubuntu Classic Server 16.04及Java
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間：2017-08-10 16:25:16" itemprop="dateCreated datePublished" datetime="2017-08-10T16:25:16+08:00">2017-08-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新於</span>
+                
+                <time title="修改時間：2019-03-24 04:47:24" itemprop="dateModified" datetime="2019-03-24T04:47:24+08:00">2019-03-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="在Raspberry-Pi上安裝Ubuntu-Classic-Server-16-04"><a href="#在Raspberry-Pi上安裝Ubuntu-Classic-Server-16-04" class="headerlink" title="在Raspberry Pi上安裝Ubuntu Classic Server 16.04"></a><strong>在Raspberry Pi上安裝Ubuntu Classic Server 16.04</strong></h1><h2 id="硬體-Raspberry-Pi-3"><a href="#硬體-Raspberry-Pi-3" class="headerlink" title="硬體 Raspberry Pi 3"></a>硬體 Raspberry Pi 3</h2><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:left">Raspberry Pi 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SoC</td>
+<td style="text-align:left">Broadcom BCM2837（CPU，GPU DSP和SDRAM、USB）</td>
+</tr>
+<tr>
+<td style="text-align:center">CPU</td>
+<td style="text-align:left">ARM Cortex-A53 64位元 (ARMv8系列) 1.2GHz (四核心)</td>
+</tr>
+<tr>
+<td style="text-align:center">GPU</td>
+<td style="text-align:left">Broadcom VideoCore IV[43], OpenGL ES 2.0, 1080p 30 h.264/MPEG-4 AVC高畫質解碼器</td>
+</tr>
+<tr>
+<td style="text-align:center">記憶體</td>
+<td style="text-align:left">1024 MB (LPDDR2)</td>
+</tr>
+<tr>
+<td style="text-align:center">影像輸出</td>
+<td style="text-align:left">畫面用RCA端子（PAL &amp; NTSC）、HDMI，HDMI介面可使用14種解析度，分別從640×350到1920×1200之間</td>
+</tr>
+<tr>
+<td style="text-align:center">板載儲存</td>
+<td style="text-align:left">MicroSD卡插槽</td>
+</tr>
+<tr>
+<td style="text-align:center">網路介面</td>
+<td style="text-align:left">10/100Mbps 乙太網介面（RJ45介面），支援802.11n無線網路及藍牙4.1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="安裝作業系統-利用Windows安裝"><a href="#安裝作業系統-利用Windows安裝" class="headerlink" title="安裝作業系統(利用Windows安裝)"></a>安裝作業系統(利用Windows安裝)</h2><ol>
+<li>官方連結下載OS：<br><a href="https://ubuntu-pi-flavour-maker.org/download/" target="_blank" rel="noopener">下載連結</a><br>此處使用：Ubuntu Classic Server 16.04(Raspberry Pi 3)<br><img src="http://i.imgur.com/lGq8iUa.png" alt></li>
+<li>解壓縮下載下來的壓縮檔，得到一個img映像檔<br><img src="http://i.imgur.com/sMyIBZD.png" alt></li>
+<li>利用讀卡機將SD卡讀入電腦中</li>
+<li>使用<a href="https://www.sdcard.org/cht/downloads/formatter_4/" target="_blank" rel="noopener">SD卡格式化工具SDFormatter</a>將SD卡格式化。<br>此處使用SDFormatter V4.0<br><img src="http://i.imgur.com/ILPuO0q.png" alt></li>
+<li>使用<a href="https://sourceforge.net/projects/win32diskimager/" target="_blank" rel="noopener">Win32 Disk Imager</a>將img映像檔燒錄到SD卡中<br>此處使用Win32 Disk Imager V0.9.5<br><img src="http://i.imgur.com/9mUU6Ft.png" alt></li>
+<li>將SD卡安全拔出，並插入PI 3中，接上HDML線<br><strong>PI3沒有開機鍵，接上電源線就開機</strong><br><strong>沒接上乙太網路線將會出現</strong><br><font style="background-color:yellow">a start job is runnung for Raise network interfaces (1s / 5min 16s)</font><br><strong>由於要等五分鐘，因此推薦將網路線插上使用</strong></li>
+</ol>
+<hr>
+<h2 id="設定Ubuntu-Classic-Server-16-04"><a href="#設定Ubuntu-Classic-Server-16-04" class="headerlink" title="設定Ubuntu Classic Server 16.04"></a>設定Ubuntu Classic Server 16.04</h2><hr>
+<h3 id="網路設定"><a href="#網路設定" class="headerlink" title="網路設定"></a>網路設定</h3><hr>
+<ol>
+<li><p><strong>修改hosts：</strong><br>輸入指令：<br><code>sudo nano /etc/hosts</code><br>修改如下所示(此以127.0.1.1)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 localhost</span><br><span class="line">127.0.1.1 yourUserName</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>縮短開機時沒抓到網路的等待時間：</strong><br>利用指令打開networking.service檔案：<br><code>sudo nano /etc/systemd/system/network-online.target.wants/networking.service</code><br>把這行改掉：<br><code>TimeoutStartSec=5min</code><br>本次縮短成10秒：<br><code>TimeoutStartSec=10sec</code><br>存檔跳出，並輸入下方指令：<br><code>sudo systemctl daemon-reload</code></p>
+</li>
+<li><strong>有線網路</strong><br>預設開機就會自動開啟，因此網路線插上即能連線(dhcp)。</li>
+<li><p><strong>無線網路(請先接網路線)</strong><br><strong>(1) 安裝wireless-tools：</strong><br><code>sudo apt-get install wireless-tools</code><br><strong>(2) 安裝wpasupplicant：</strong><br><code>sudo apt-get install wpasupplicant</code><br><strong>(3) 更新：</strong><br><code>sudo apt-get update</code><br><strong>(4) 編輯interfaces文件：</strong><br><code>sudo nano /etc/network/interfaces</code><br>如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line"></span><br><span class="line">auto wlan0</span><br><span class="line">iface wlan0 inet dhcp</span><br><span class="line">wpa-ssid &quot;yourWifiName&quot;</span><br><span class="line">wpa-psk &quot;yourPassword&quot;</span><br><span class="line">wireless-power off          #此行是為了避免無線網路關閉</span><br></pre></td></tr></table></figure>
+<ul>
+<li><font style="background-color:yellow">為了避免pi不要進入省電或自動將無線網路關掉修改：</font><br><code>sudo nano /etc/kbd/config</code><br>如下所示：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BLANK_TIME=0 </span><br><span class="line">POWERDOWN_TIME=0</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>(5) 重新開機：</strong><br><code>reboot</code></p>
+<ul>
+<li><font style="background-color:yellow">想看現在wifi掃描到哪些AP</font><br><code>sudo iwlist wlan0 scan</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="JAVA安裝"><a href="#JAVA安裝" class="headerlink" title="JAVA安裝"></a>JAVA安裝</h3><hr>
+<ol>
+<li>加入JAVA ppa：<br><code>sudo add-apt-repository ppa:webupd8team/java</code></li>
+<li>更新：<br><code>sudo apt-get update</code></li>
+<li>看有什麼java可以裝：<br><code>apt-cache search oracle-java</code></li>
+<li>裝java jdk(此裝 java8)：<br><code>sudo apt-get install oracle-java8-installer</code></li>
+<li>測試是否成功(java)：<br><code>java -version</code><br>成功：<br><p><font style="background-color:yellow">java version “1.8.0_144”</font></p></li>
+<li>測試是否成功(javac)：<br><code>javac -version</code><br>成功：<br><p><font style="background-color:yellow">javac 1.8.0_144</font></p></li>
+</ol>
+<ul>
+<li>多版本java切換，如果有設定多個java<br><code>sudo update-alternatives --config java</code></li>
+<li><p>如果要手動安裝，指令下載oracle的官網的java方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-arm64-vfp-hflt.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>推薦使用短網址</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; http://goo.gl/zzmjK9 -O jdk-8u144-linux-arm64-vfp-hflt.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h2><p><a href="https://sites.google.com/site/raspberypishare0918/home/di-yi-ci-qi-dong/1-6-you-xian-huo-wu-xian-dedhcp" target="_blank" rel="noopener">有線 或 無線 的DHCP 設定或固定IP設定</a><br><a href="https://askubuntu.com/questions/775597/how-to-use-onboard-wifi-on-raspberry-pi-3-with-ubuntu-server-16-04" target="_blank" rel="noopener">How to use onboard wifi on Raspberry Pi 3 with Ubuntu Server 16.04?</a><br><a href="https://ubuntuforums.org/showthread.php?t=2323253" target="_blank" rel="noopener">A start job is running for raise network interfaces (5 mins 1 sec) in ubuntu16.04</a><br><a href="https://askubuntu.com/questions/773973/ubuntu-16-04-system-boot-waits-saying-raise-network-interfaces" target="_blank" rel="noopener">Ubuntu 16.04 - system boot waits saying “Raise network interfaces”</a><br><a href="https://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/setting-up-wifi-with-occidentalis" target="_blank" rel="noopener">Setting up Wifi with the Command Line</a></p>
+<p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?viewmode=compact&amp;topic_id=48704&amp;forum=22" target="_blank" rel="noopener">想請問如何在ubuntu下執行JAVA [論壇 - 新手村]</a><br><a href="http://www.team-bob.org/linux-%E5%A6%82%E4%BD%95%E5%9C%A8-ubuntu-14-04-%E4%B8%AD%E5%AE%89%E8%A3%9D-oracleopen-jdk/" target="_blank" rel="noopener">[Linux] 如何在 Ubuntu 14.04 中安裝 Oracle/Open JDK</a></p>
+<p><a href="https://wiki.ubuntu.com/ARM/RaspberryPi" target="_blank" rel="noopener">Ubuntu：RaspberryPi</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/21/在Raspbian上利用OpenCV內建函式及Camera做人臉偵測/" rel="next" title="在Raspbian上利用OpenCV內建函式及Camera做人臉偵測">
+                <i class="fa fa-chevron-left"></i> 在Raspbian上利用OpenCV內建函式及Camera做人臉偵測
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/21/在RASPBIAN JESSIE LITE上安裝repository和較新版Oracle Java/" rel="prev" title="在RASPBIAN JESSIE LITE上安裝repository和較新版Oracle Java">
+                在RASPBIAN JESSIE LITE上安裝repository和較新版Oracle Java <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/DSC_0026.jpg" alt="柯天文(Tien-Wen Ko)">
+            
+              <p class="site-author-name" itemprop="name">柯天文(Tien-Wen Ko)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ntsok56893" title="GitHub &rarr; https://github.com/ntsok56893" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在Raspberry-Pi上安裝Ubuntu-Classic-Server-16-04"><span class="nav-number">1.</span> <span class="nav-text">在Raspberry Pi上安裝Ubuntu Classic Server 16.04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬體-Raspberry-Pi-3"><span class="nav-number">1.1.</span> <span class="nav-text">硬體 Raspberry Pi 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝作業系統-利用Windows安裝"><span class="nav-number">1.2.</span> <span class="nav-text">安裝作業系統(利用Windows安裝)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設定Ubuntu-Classic-Server-16-04"><span class="nav-number">1.3.</span> <span class="nav-text">設定Ubuntu Classic Server 16.04</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#網路設定"><span class="nav-number">1.3.1.</span> <span class="nav-text">網路設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA安裝"><span class="nav-number">1.3.2.</span> <span class="nav-text">JAVA安裝</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考文章"><span class="nav-number">1.4.</span> <span class="nav-text">參考文章</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">柯天文</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
